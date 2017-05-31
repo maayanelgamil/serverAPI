@@ -37,7 +37,7 @@ app.set('port', process.env.PORT || 3000);
 
 app.listen(3000, function() {
     console.log('I am listening on localhost:3000');
-    // server is open and listening on port 3100, to access: localhost:3100 in any browser.
+    // server is open and listening on port 3000, to access: localhost:3000 in any browser.
 });
 
 // error handler
@@ -57,8 +57,37 @@ var config = {
     password: 'Aa123456',
     server: 'maayankeren.database.windows.net',
     requestTimeout: 15000,
-    options: {encrypt: true, database: '???'}
+    options: {encrypt: true, database: 'mk_db'}
 };
+
+//-------------------------------------------------------------------------------------------------------------------
+connection = new Connection(config);
+var connected = false;
+connection.on('connect', function(err) {
+    if (err) {
+        console.error('error connecting: ' + err.message);
+    }
+    else {
+        console.log("Connected Azure");
+        connected = true;
+    }
+});
+
+//-------------------------------------------------------------------------------------------------------------------
+app.use(function(req, res, next){
+    if (connected)
+        next();
+    else
+        res.status(503).send('Server is down');
+});
+//-------------------------------------------------------------------------------------------------------------------
+app.get('/select', function (req,res) {
+    //it is just a simple example without handling the answer
+    DButilsAzure.Select(connection, 'Select * from Users', function (result) {
+        res.send(result);
+    });
+});
+//-------------------------------------------------------------------------------------------------------------------
 
 
 module.exports = app;
