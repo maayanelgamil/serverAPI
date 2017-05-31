@@ -3,8 +3,10 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var Connection = require('tedious').Connection;
 var bodyParser = require('body-parser');
 var http = require('http');         // protocol
+var DButilsAzure = require('./utils');
 
 var app = express();
 
@@ -48,5 +50,15 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+var config = {
+    userName: 'maayankeren',
+    password: 'Aa123456',
+    server: 'maayankeren.database.windows.net',
+    requestTimeout: 15000,
+    options: {encrypt: true, database: '???'}
+};
+
 
 module.exports = app;
