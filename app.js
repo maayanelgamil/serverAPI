@@ -4,9 +4,6 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var index = require('./routes/index');
-var users = require('./routes/users');
-var routes = require('./routes');   // where routes will be defined
 var http = require('http');         // protocol
 
 var app = express();
@@ -24,9 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
-app.use(express.logger('dev')); // This line is what turns on the server logger in the terminal.
+//app.use(express.logger('dev')); // This line is what turns on the server logger in the terminal.
 
 // catch 404 and forward to error handle
 app.use(function(req, res, next) {
