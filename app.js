@@ -25,12 +25,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //app.use(express.logger('dev')); // This line is what turns on the server logger in the terminal.
 
+/*
 // catch 404 and forward to error handle
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
-});
+});*/
 
 //The following is what sets the port of your local app, feel free to change that if needed.
 app.set('port', process.env.PORT || 3000);
@@ -39,7 +40,7 @@ app.listen(3000, function() {
     console.log('I am listening on localhost:3000');
     // server is open and listening on port 3000, to access: localhost:3000 in any browser.
 });
-
+/*
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
@@ -49,7 +50,7 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-});
+});*/
 
 
 var config = {
@@ -81,7 +82,7 @@ app.use(function(req, res, next){
         res.status(503).send('Server is down');
 });
 //-------------------------------------------------------------------------------------------------------------------
-app.get('/select', function (req,res) {
+app.get('/select1', function (req,res) {
     //it is just a simple example without handling the answer
     DButilsAzure.Select(connection, 'Select * from Users', function (result) {
         res.send(result);
