@@ -33,6 +33,11 @@ app.use(function(req, res, next) {
 //The following is what sets the port of your local app, feel free to change that if needed.
 app.set('port', process.env.PORT || 3000);
 
+app.listen(3000, function() {
+    console.log('I am listening on localhost:3000');
+    // server is open and listening on port 3100, to access: localhost:3100 in any browser.
+});
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
