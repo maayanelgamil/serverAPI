@@ -85,7 +85,7 @@ app.use(function(req, res, next){
 });
 //-------------------------------------------------------------------------------------------------------------------
 app.get('/select1', function (req,res) {
-    DButilsAzure.Select(connection, 'Select * from Users', function (result) {
+    DButilsAzure.Select(connection, 'Select * from Users').then(function (result) {
         res.send(result);
     });
 });
@@ -94,7 +94,7 @@ app.get('/select1', function (req,res) {
 app.put('/registerUser', function (req,res,next) {
 
     //Need to chek if the user name exists !
-
+    // NEED to make all the validations
     var firstName = req.body.FirstName;
     var lastName = req.body.LastName;
     var adress = req.body.Adress;
@@ -107,7 +107,7 @@ app.put('/registerUser', function (req,res,next) {
     var isAdmin = req.body.isAdmin ? req.body.isAdmin : 0 ;
 
     query = DButilsAzure.getInsertScript(Constants.usersInsert, [firstName, lastName, adress,city, country, phone, cellular, mail, creditCard, isAdmin]);
-    DButilsAzure.Insert(connection, query, function (result) {
+    DButilsAzure.Insert(connection, query).then( function (result) {
             res.send(result);
         });
     });
