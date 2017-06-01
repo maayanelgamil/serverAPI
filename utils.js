@@ -39,3 +39,18 @@ exports.Select = function(connection, query, callback) {
     connection.execSql(req);
 
 };
+exports.add= function(connection, query, callback) {
+   var req = new Request(query , function (err) {
+        if (err) {
+            console.log(err);
+            callback(false);
+            return ;
+        }
+   });
+   req.on('requestCompleted', function(){
+       console.log("request completed with: " + req.rowsAffected + "rows");
+   });
+   connection.execSql(req);
+    callback(true);
+}
+

@@ -83,12 +83,45 @@ app.use(function(req, res, next){
 });
 //-------------------------------------------------------------------------------------------------------------------
 app.get('/select1', function (req,res) {
-    //it is just a simple example without handling the answer
     DButilsAzure.Select(connection, 'Select * from Users', function (result) {
         res.send(result);
     });
 });
 //-------------------------------------------------------------------------------------------------------------------
 
+app.put('/registerUser', function (req,res,next) {
 
+    //Need to chek if the user name exists !
+
+    var firstName = req.body.FirstName;
+    var lastName = req.body.LastName;
+    var adress = req.body.Adress;
+    var city = req.body.City;
+    var country = req.body.Country;
+    var phone = req.body.Phone;
+    var cellular = req.body.Cellular;
+    var mail = req.body.Mail;
+    var creditCard = req.body.CreditCard ? req.body.CreditCard : null;
+    var isAdmin = req.body.isAdmin ? req.body.isAdmin : 0 ;
+
+    var sql = "INSERT INTO [dbo].[Users]    ([FirstName]     " +
+        ",[LastName]      " +
+        ",[Adress]      " +
+        ",[City]" +
+        ",[Country]" +
+        ",[Phone]" +
+        ",[Cellular]" +
+        ",[Mail]" +
+        ",[CreditCardNumber]" +
+        ",[isADmin])" +
+        " VALUES ";
+
+    var values = "( '" +  firstName + "','" + lastName + "','" + adress + "','" + city + "','"
+        + country+ "','" +phone+ "','" +cellular+ "','" +mail+ "','" +creditCard+ "','" +isAdmin +"')";
+
+    DButilsAzure.add(connection, sql + values, function (result) {
+            res.send(result);
+        });
+    });
+//------------------------------------------------------------------------------------------------------------------
 module.exports = app;
