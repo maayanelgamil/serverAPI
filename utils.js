@@ -39,7 +39,8 @@ exports.Select = function(connection, query, callback) {
     connection.execSql(req);
 
 };
-exports.add= function(connection, query, callback) {
+
+exports.Insert= function(connection, query, callback) {
    var req = new Request(query , function (err) {
         if (err) {
             console.log(err);
@@ -54,3 +55,11 @@ exports.add= function(connection, query, callback) {
     callback(true);
 }
 
+exports.getInsertScript = function(sql, values) {
+    sql += " VALUES ( '"
+    for(var i = 0; i < values.length -1 ; i++) {
+        sql += values[i] + "' , '";
+    }
+    sql +=values[i] + "')";
+    return sql;
+}

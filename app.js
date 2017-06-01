@@ -7,6 +7,8 @@ var Connection = require('tedious').Connection;
 var bodyParser = require('body-parser');
 var http = require('http');         // protocol
 var DButilsAzure = require('./utils');
+var Constants = require('./Constants');
+
 
 var app = express();
 
@@ -104,22 +106,8 @@ app.put('/registerUser', function (req,res,next) {
     var creditCard = req.body.CreditCard ? req.body.CreditCard : null;
     var isAdmin = req.body.isAdmin ? req.body.isAdmin : 0 ;
 
-    var sql = "INSERT INTO [dbo].[Users]    ([FirstName]     " +
-        ",[LastName]      " +
-        ",[Adress]      " +
-        ",[City]" +
-        ",[Country]" +
-        ",[Phone]" +
-        ",[Cellular]" +
-        ",[Mail]" +
-        ",[CreditCardNumber]" +
-        ",[isADmin])" +
-        " VALUES ";
-
-    var values = "( '" +  firstName + "','" + lastName + "','" + adress + "','" + city + "','"
-        + country+ "','" +phone+ "','" +cellular+ "','" +mail+ "','" +creditCard+ "','" +isAdmin +"')";
-
-    DButilsAzure.add(connection, sql + values, function (result) {
+    query = DButilsAzure.getInsertScript(Constants.usersInsert, [firstName, lastName, adress,city, country, phone, cellular, mail, creditCard, isAdmin]);
+    DButilsAzure.Insert(connection, query, function (result) {
             res.send(result);
         });
     });
