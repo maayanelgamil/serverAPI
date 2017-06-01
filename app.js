@@ -75,7 +75,6 @@ connection.on('connect', function(err) {
         connected = true;
     }
 });
-
 //-------------------------------------------------------------------------------------------------------------------
 app.use(function(req, res, next){
     if (connected)
@@ -84,7 +83,7 @@ app.use(function(req, res, next){
         res.status(503).send('Server is down');
 });
 //-------------------------------------------------------------------------------------------------------------------
-app.get('/select1', function (req,res) {
+app.get('/getAllUsers', function (req,res) {
     DButilsAzure.Select(connection, 'Select * from Users').then(function (result) {
         res.send(result);
     });
