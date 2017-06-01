@@ -9,7 +9,6 @@ var http = require('http');         // protocol
 var DButilsAzure = require('./utils');
 var Constants = require('./Constants');
 
-
 var app = express();
 
 // view engine setup
@@ -54,7 +53,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });*/
 
-
 var config = {
     userName: 'maayankeren',
     password: 'Aa123456',
@@ -93,9 +91,8 @@ app.get('/getDollarRate', function (req,res) {
         res.send("3.81");
 });
 //-------------------------------------------------------------------------------------------------------------------
-app.put('/registerUser', function (req,res,next) {
-
-    //Need to chek if the user name exists !
+app.post('/registerUser', function (req,res,next) {
+    //Need to check if the user name exists !
     // NEED to make all the validations
     var firstName = req.body.FirstName;
     var lastName = req.body.LastName;
