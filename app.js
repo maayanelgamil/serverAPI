@@ -94,7 +94,6 @@ app.get('/getDollarRate', function (req,res) {
         res.send("3.81");
 });
 //-------------------------------------------------------------------------------------------------------------------
-
 app.put('/registerUser', function (req,res,next) {
 
     //Need to chek if the user name exists !
@@ -116,4 +115,11 @@ app.put('/registerUser', function (req,res,next) {
         });
     });
 //------------------------------------------------------------------------------------------------------------------
+app.del('/deleteUser', function (req,res) {
+    var userId = req.body.UserID;
+    DButilsAzure.Delete(connection,'DELETE from dbo.Users WHERE UserID = '+userId ).then(function (result) {
+        res.send(result);
+    });
+});
+//-------------------------------------------------------------------------------------------------------------------
 module.exports = app;

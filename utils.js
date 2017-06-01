@@ -55,6 +55,22 @@ exports.Insert= function(connection, query) {
     });
 };
 
+exports.Delete= function(connection, query) {
+    return new Promise(function(resolve,reject) {
+        var req = new Request(query, function (err) {
+            if (err) {
+                console.log(err);
+                reject(err.message);
+            }
+        });
+        req.on('requestCompleted', function () {
+            console.log("request completed");
+        });
+        connection.execSql(req);
+        resolve(true);
+    });
+};
+
 exports.getInsertScript = function(sql, values) {
     sql += " VALUES ( '"
     for(var i = 0; i < values.length -1 ; i++) {
