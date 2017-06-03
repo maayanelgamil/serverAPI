@@ -88,7 +88,7 @@ exports.Insert= function(query) {
                 }
             });
         req.on('requestCompleted', function () {
-            console.log("request completed with: " + req.rowsAffected + "rows");
+            console.log("request completed to insert: " + query);
             connection.close();
             if(reject)
                 resolve(true);
