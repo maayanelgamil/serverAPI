@@ -7,7 +7,7 @@ var Constants = require('../Constants');
 var router = express.Router();
 
 router.post('/register', function (req,res) {
-    //Need to check if the user name exists !
+    //Add User
     var username = req.body[0].UseName;
     var password = req.body[0].Password;
     var firstName = req.body[0].FirstName;
@@ -18,12 +18,50 @@ router.post('/register', function (req,res) {
     var phone = req.body[0].Phone;
     var mail = req.body[0].Mail;
     var creditCard = req.body[0].CreditCardNumber;
-    var isAdmin = req.body[0].isAdmin ? req.body[0].isAdmin : 0 ;
+    var isAdmin = req.body[0].isAdmin ? req.body[0].isAdmin : 0;
     var date = new Date();
     var currDate = date.getHours();
 
-    query = DButilsAzure.getInsertScript(Constants.usersInsert, [username, password, firstName, lastName, adress,city, country, phone, mail, creditCard, currDate, isAdmin]);
-    DButilsAzure.Insert(connection, query).then( function (result) {
+    query = DButilsAzure.getInsertScript(Constants.usersInsert, [username, password, firstName, lastName, adress, city, country, phone, mail, creditCard, currDate, isAdmin]);
+    DButilsAzure.Insert(connection, query).then(function () { //insert user's questions and answers
+        var q1 = req.body[1].question1;
+        var q2 = req.body[1].question2;
+        var a1 = req.body[1].answer1;
+        var a2 = req.body[1].answer2;
+        questionsQuery = DButilsAzure.getInsertScript(Constants.questionsInsert, [username, q1, q2, a1, a2]);
+        DButilsAzure.Insert(connection2, questionsQuery).then(function (result) { // insert user's categories
+            if (result == true) {
+                var c1 = req.body[2].category1;
+                var c2 = req.body[2].category2;
+                var c3 = req.body[2].category3;
+                categoryQuery = DButilsAzure.getInsertScript(Constants.userCategoryInsert, [username, c1, c2, c3]);
+                DButilsAzure.Insert(connection3, categoryQuery).then(function (result) {
+                      if(result == true) {
+                         DButilsAzure.Select(connection4, "Select * From [Users] Where [UserName] = '" + username + "'").then(function (result) {
+                             res.send(result);
+                         });
+                     }
+                     else throw new Error("Register failed");
+                     });
+                }
+            else throw new Error("Register failed");
+        });
+    });
+});
+//-------------------------------------------------------------------------------------------------------------------
+router.delete('/deleteUser', function (req,res) {
+        var userId = req.body.UserName;
+        if(userId){
+        DButilsAzure.Delete(connection, "DELETE from [Users] WHERE [UserName] = '" + userId + "'").then(function (result) {
+            res.send(result);
+        });
+    }else{
+        throw new Error('Delete User Faild: Since the user name is invalid ');
+    }
+});
+//-------------------------------------------------------------------------------------------------------------------
+router.get('/getAllUsers', function (req,res,next) {
+    DButilsAzure.Select(connection, 'Select * from Users').then(function (result) {
         res.send(result);
     });
 });

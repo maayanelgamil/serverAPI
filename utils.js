@@ -71,9 +71,9 @@ exports.Delete= function(connection, query) {
         });
         req.on('requestCompleted', function () {
             console.log("request completed");
+            resolve(true);
         });
         connection.execSql(req);
-        resolve(true);
     });
 };
 

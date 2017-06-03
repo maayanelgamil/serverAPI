@@ -9,6 +9,8 @@ var http = require('http');         // protocol
 var DButilsAzure = require('./utils');
 var Constants = require('./Constants');
 var users = require('./routes/Users');
+var cakes = require('./routes/Cakes');
+
 var app = express();
 
 // view engine setup
@@ -35,21 +37,11 @@ app.use(function(req, res, next) {
 
 //The following is what sets the port of your local app, feel free to change that if needed.
 app.use('/users', users);
+app.use('/cakes', cakes);
 app.set('port', process.env.PORT || 3000);
 app.listen(3000, function() {
     console.log('I am listening on localhost:3000');
     // server is open and listening on port 3000, to access: localhost:3000 in any browser.
-});
-
-// error handler
-app.use(function(err, req, res) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
 });
 
 var config = {
@@ -62,6 +54,10 @@ var config = {
 
 //-------------------------------------------------------------------------------------------------------------------
 connection = new Connection(config);
+connection2 = new Connection(config);
+connection3 = new Connection(config);
+connection4 = new Connection(config);
+
 var connected = false;
 connection.on('connect', function(err) {
     if (err) {
@@ -80,24 +76,19 @@ app.use(function(req, res, next){
         res.status(503).send('Server is down');
 });
 //-------------------------------------------------------------------------------------------------------------------
-app.get('/getAllUsers', function (req,res) {
-    DButilsAzure.Select(connection, 'Select * from Users').then(function (result) {
-        res.send(result);
-    });
-});
-//-------------------------------------------------------------------------------------------------------------------
 app.get('/getDollarRate', function (req,res) {
         res.send("3.81");
 });
 //-------------------------------------------------------------------------------------------------------------------
-//------------------------------------------------------------------------------------------------------------------
-app.del('/deleteUser', function (req,res) {
-        var userId = req.body.UserID;
-        DButilsAzure.Delete(connection, 'DELETE from dbo.Users WHERE UserID = ' + userId).then(function (result) {
-            res.send(result);
-        });
-});
-//-------------------------------------------------------------------------------------------------------------------
-module.exports = app;
+// error handler
+app.use(function(err, req, res) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-var keren;
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
+});
+
+module.exports = app;
