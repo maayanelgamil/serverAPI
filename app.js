@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var http = require('http');         // protocol
 var DButilsAzure = require('./utils');
 var Constants = require('./Constants');
-
+var users = require('./routes/Users');
 var app = express();
 
 // view engine setup
@@ -17,7 +17,6 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -35,15 +34,15 @@ app.use(function(req, res, next) {
 });*/
 
 //The following is what sets the port of your local app, feel free to change that if needed.
+app.use('/users', users);
 app.set('port', process.env.PORT || 3000);
-
 app.listen(3000, function() {
     console.log('I am listening on localhost:3000');
     // server is open and listening on port 3000, to access: localhost:3000 in any browser.
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function(err, req, res) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -91,26 +90,6 @@ app.get('/getDollarRate', function (req,res) {
         res.send("3.81");
 });
 //-------------------------------------------------------------------------------------------------------------------
-app.post('/register', function (req,res,next) {
-    //Need to check if the user name exists !
-    var firstName = req.body.FirstName;
-    var lastName = req.body.LastName;
-    var firstName = req.body.FirstName;
-    var lastName = req.body.LastName;
-    var adress = req.body.Adress;
-    var city = req.body.City;
-    var country = req.body.Country;
-    var phone = req.body.Phone;
-    var cellular = req.body.Cellular;
-    var mail = req.body.Mail;
-    var creditCard = req.body.CreditCard ? req.body.CreditCard : null;
-    var isAdmin = req.body.isAdmin ? req.body.isAdmin : 0 ;
-
-    query = DButilsAzure.getInsertScript(Constants.usersInsert, [firstName, lastName, adress,city, country, phone, cellular, mail, creditCard, isAdmin]);
-    DButilsAzure.Insert(connection, query).then( function (result) {
-            res.send(result);
-        });
-    });
 //------------------------------------------------------------------------------------------------------------------
 app.del('/deleteUser', function (req,res) {
         var userId = req.body.UserID;

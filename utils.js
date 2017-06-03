@@ -50,8 +50,14 @@ exports.Insert= function(connection, query) {
         req.on('requestCompleted', function () {
             console.log("request completed with: " + req.rowsAffected + "rows");
         });
-        connection.execSql(req);
-        resolve(true);
+        try{
+            connection.execSql(req);
+            resolve(true);
+        }catch(err) {
+            reject(err.message);
+            console.log(err);
+
+        }
     });
 };
 

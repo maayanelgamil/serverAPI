@@ -4,8 +4,7 @@
 
 
 exports.usersInsert = "INSERT INTO [dbo].[Users]"+
-    "([UserID]"+
-    ",[UseName]"+
+    "([UserName]"+
     ",[Password]"+
     ",[FirstName]"+
     ",[LastName]"+
