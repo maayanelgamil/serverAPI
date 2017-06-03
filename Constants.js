@@ -15,10 +15,7 @@ exports.usersInsert = "INSERT INTO [Users]"+
     ",[Mail]"+
     ",[CreditCardNumber]"+
     ",[LastLogin]"+
-    ",[isADmin])";
-
-exports.questionsInsert = "INSERT INTO [dbo].[QAndA]" +
-    "([UserName]"+
+    ",[isADmin]" +
     ",[Question1]"+
    " ,[Question2]"+
     ",[Answer1]"+

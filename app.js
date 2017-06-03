@@ -51,23 +51,6 @@ var config = {
     requestTimeout: 15000,
     options: {encrypt: true, database: 'mk_db'}
 };
-
-//-------------------------------------------------------------------------------------------------------------------
-connection = new Connection(config);
-connection2 = new Connection(config);
-connection3 = new Connection(config);
-connection4 = new Connection(config);
-
-var connected = false;
-connection.on('connect', function(err) {
-    if (err) {
-        console.error('error connecting: ' + err.message);
-    }
-    else {
-        console.log("Connected Azure");
-        connected = true;
-    }
-});
 //-------------------------------------------------------------------------------------------------------------------
 app.use(function(req, res, next){
     if (connected)

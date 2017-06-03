@@ -1,11 +1,23 @@
 /**
  * Created by Maayan on 5/31/2017.
  */
+var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;
 var TYPES = require('tedious').TYPES;
 
-exports.Select = function(connection, query) {
+var config = {
+    userName: 'maayankeren',
+    password: 'Aa123456',
+    server: 'maayankeren.database.windows.net',
+    requestTimeout: 15000,
+    options: {encrypt: true, database: 'mk_db'}
+};
+
+var connection;
+
+exports.Select = function(query) {
   return new Promise(function(resolve,reject) {
+
       var req = new Request(query, function (err, rowCount) {
           if (err) {
               console.log(err);
@@ -14,6 +26,20 @@ exports.Select = function(connection, query) {
       });
       var ans = [];
       var properties = [];
+      connection = new Connection(config);
+      connection.on('connect', function(err) {
+          if (err) {
+              console.error('error connecting: ' + err.message);
+              reject(err);
+          }
+          console.log('connection on');
+          var dbReq = new Request(query, function (err, rowCount) {
+              if (err) {
+                  console.log(err);
+                  reject(err);
+              }
+          });
+
       req.on('columnMetadata', function (columns) {
           columns.forEach(function (column) {
               if (column.colName != null)
@@ -32,14 +58,15 @@ exports.Select = function(connection, query) {
           //don't forget handle your errors
           console.log('request Completed: ' + req.rowCount + ' row(s) returned');
           console.log(ans);
+          connection.close();
           resolve(ans);
       });
-
       connection.execSql(req);
-  });
-};
+        });
+    });
+}
 
-exports.Insert= function(connection, query) {
+exports.Insert= function(query) {
     return new Promise(function(resolve,reject) {
         var req = new Request(query, function (err) {
             if (err) {
@@ -47,21 +74,38 @@ exports.Insert= function(connection, query) {
                 reject(err.message);
             }
         });
+        connection = new Connection(config);
+        connection.on('connect', function(err) {
+            if (err) {
+                console.error('error connecting: ' + err.message);
+                reject(err);
+            }
+            console.log('connection on');
+            var dbReq = new Request(query, function (err, rowCount) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+            });
         req.on('requestCompleted', function () {
             console.log("request completed with: " + req.rowsAffected + "rows");
+            connection.close();
+            if(reject)
+                resolve(true);
+            else
+                resolve(false);
         });
         try{
             connection.execSql(req);
-            resolve(true);
         }catch(err) {
             reject(err.message);
             console.log(err);
-
-        }
+           }
+         });
     });
-};
+}
 
-exports.Delete= function(connection, query) {
+exports.Delete= function(query) {
     return new Promise(function(resolve,reject) {
         var req = new Request(query, function (err) {
             if (err) {
@@ -69,13 +113,28 @@ exports.Delete= function(connection, query) {
                 reject(err.message);
             }
         });
+        connection = new Connection(config);
+        connection.on('connect', function(err) {
+            if (err) {
+                console.error('error connecting: ' + err.message);
+                reject(err);
+            }
+            console.log('connection on');
+            var dbReq = new Request(query, function (err, rowCount) {
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+            });
+
         req.on('requestCompleted', function () {
             console.log("request completed");
-            resolve(true);
+            connection.close();
         });
         connection.execSql(req);
     });
-};
+});
+}
 
 exports.getInsertScript = function(sql, values) {
     sql += " VALUES ( '"
