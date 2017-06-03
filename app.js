@@ -41,7 +41,7 @@ app.listen(3000, function() {
     console.log('I am listening on localhost:3000');
     // server is open and listening on port 3000, to access: localhost:3000 in any browser.
 });
-/*
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
@@ -51,7 +51,7 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-});*/
+});
 
 var config = {
     userName: 'maayankeren',
@@ -91,9 +91,10 @@ app.get('/getDollarRate', function (req,res) {
         res.send("3.81");
 });
 //-------------------------------------------------------------------------------------------------------------------
-app.post('/registerUser', function (req,res,next) {
+app.post('/register', function (req,res,next) {
     //Need to check if the user name exists !
-    // NEED to make all the validations
+    var firstName = req.body.FirstName;
+    var lastName = req.body.LastName;
     var firstName = req.body.FirstName;
     var lastName = req.body.LastName;
     var adress = req.body.Adress;
@@ -112,10 +113,10 @@ app.post('/registerUser', function (req,res,next) {
     });
 //------------------------------------------------------------------------------------------------------------------
 app.del('/deleteUser', function (req,res) {
-    var userId = req.body.UserID;
-    DButilsAzure.Delete(connection,'DELETE from dbo.Users WHERE UserID = '+userId ).then(function (result) {
-        res.send(result);
-    });
+        var userId = req.body.UserID;
+        DButilsAzure.Delete(connection, 'DELETE from dbo.Users WHERE UserID = ' + userId).then(function (result) {
+            res.send(result);
+        });
 });
 //-------------------------------------------------------------------------------------------------------------------
 module.exports = app;

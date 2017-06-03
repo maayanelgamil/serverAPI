@@ -3,13 +3,17 @@
  */
 
 
-exports.usersInsert = "INSERT INTO [dbo].[Users]    ([FirstName]     " +
-    ",[LastName]      " +
-    ",[Adress]      " +
-    ",[City]" +
-    ",[Country]" +
-    ",[Phone]" +
-    ",[Cellular]" +
-    ",[Mail]" +
-    ",[CreditCardNumber]" +
+exports.usersInsert = "INSERT INTO [dbo].[Users]"+
+    "([UserID]"+
+    ",[UseName]"+
+    ",[Password]"+
+    ",[FirstName]"+
+    ",[LastName]"+
+    ",[Adress]"+
+    ",[City]"+
+    ",[Country]"+
+    ",[Phone]"+
+    ",[Mail]"+
+    ",[CreditCardNumber]"+
+    ",[LastLogin]"+
     ",[isADmin])";
