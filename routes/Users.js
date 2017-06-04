@@ -51,7 +51,7 @@ router.delete('/deleteUser', function (req,res) {
     }
 });
 //-------------------------------------------------------------------------------------------------------------------
-router.get('/getAllUsers', function (req,res,next) {
+router.get('/getAll', function (req,res,next) {
     DButilsAzure.Select('Select * from Users').then(function (result) {
         res.send(result);
     });
@@ -102,6 +102,14 @@ router.post('/addToCart', function (req,res,next) {
             res.send(result);
         else
             res.send(false);
+    });
+});
+//-------------------------------------------------------------------------------------------------------------------
+router.delete('/deleteFromCart', function (req,res) {
+    var name = req.body.UserName;
+    var cake = req.body.CakeID;
+    DButilsAzure.Delete("DELETE from [CakesInCarts] WHERE [UserName] = '" + name + "' AND [CakeID] = '" + cake + "'").then(function (result) {
+        res.send(result);
     });
 });
 
