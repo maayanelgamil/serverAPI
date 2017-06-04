@@ -91,5 +91,18 @@ router.put('/orders', function (req,res,next) {
         res.send(result);
     });
 });
+//-------------------------------------------------------------------------------------------------------------------
+router.post('/addToCart', function (req,res,next) {
+    var name = req.body.UserName;
+    var cake = req.body.CakeID;
+    var amount = req.body.Amount;
+    var query = DButilsAzure.getInsertScript(Constants.insertToCart, [name, cake, amount]);
+    DButilsAzure.Insert(query).then(function (result) {
+        if(result == true)
+            res.send(result);
+        else
+            res.send(false);
+    });
+});
 
 module.exports = router;

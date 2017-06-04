@@ -44,6 +44,11 @@ exports.insertCake = "INSERT INTO [dbo].[Cakes]"+
     ",[price]"+
     ",[StockAmount])";
 
+exports.insertToCart = "INSERT INTO [dbo].[CakesInCarts]"+
+    "([UserName]"+
+    ",[CakeID]"+
+    ",[Amount])";
+
 exports.CurrentTime = function getDateTime() {
 
     var date = new Date();
