@@ -48,10 +48,28 @@ router.delete('/deleteCake', function (req,res) {
         //The result doenn't seem to be sent to the user
     });
 });
-
+//-------------------------------------------------------------------------------------------------------------------
 router.get('/getNewCakes', function (req,res) {
     DButilsAzure.Select("SELECT TOP 5 * from [Cakes] ORDER BY CakeID DESC").then(function (result) {
         res.send(result);
+    });
+});
+//-------------------------------------------------------------------------------------------------------------------
+router.get('/top5', function (req,res) {
+    DButilsAzure.Select("SELECT TOP 5 CakeID FROM (SELECT CakeID, SUM(Amount) AS Total FROM CakesInOrders GROUP BY CakeID) totals ORDER BY Total DESC")
+        .then(function (result) {
+            var c1 = result[0].CakeID;
+            var c2 = result[1].CakeID;
+            var c3 = result[2].CakeID;
+            var c4 = result[3].CakeID;
+            var c5 = result[4].CakeID;
+            DButilsAzure.Select("Select * From Cakes Where CakeID = '" + c1 + "' OR CakeID = '" + c2  + "' OR CakeID = '" + c3 +
+                                "' OR CakeID ='" + c4 + "' OR CakeID = '" + c5 +"'").then(function(resolve){
+                    res.send(resolve);
+                }).catch(function(){
+                console.log("Promise Rejected");
+                res.send("Rejected");
+            });
     });
 });
 
