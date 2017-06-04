@@ -15,5 +15,17 @@ router.get('/', function (req,res,next) {
         res.send(result);
     });
 });
+//-------------------------------------------------------------------------------------------------------------------
+router.put('/available', function (req,res,next) {
+    var id = req.body.CakeID;
+    var amount = req.body.Amount;
+    DButilsAzure.Select("Select * from Cakes Where [CakeID] = '" + id + "' AND [StockAmount] >= '"+ amount + "'")
+    .then(function (result) {
+        if(result.length > 0)
+            res.send(true);
+        else
+            res.send(false);
+    });
+});
 
 module.exports = router;
