@@ -84,6 +84,12 @@ router.post('/restorePassword', function (req,res,next) {
                 res.send(result[0]);
     });
 });
-
+//-------------------------------------------------------------------------------------------------------------------
+router.put('/orders', function (req,res,next) {
+    var name = req.body.UserName;
+    DButilsAzure.Select("Select * from Orders Where [UserName] = '" + name + "'").then(function (result) {
+        res.send(result);
+    });
+});
 
 module.exports = router;
