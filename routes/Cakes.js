@@ -27,5 +27,18 @@ router.put('/available', function (req,res,next) {
             res.send(false);
     });
 });
+//-------------------------------------------------------------------------------------------------------------------
+router.post('/addCake', function (req,res,next) {
+    var name = req.body.CakeName;
+    var suplierId = req.body.SuplierID;
+    var description = req.body.Description;
+    var price = req.body.Price;
+    var amount = req.body.StockAmount;
+
+    var query = DButilsAzure.getInsertScript(Constants.insertCake, [name, suplierId, description, price, amount]);
+    DButilsAzure.Insert(query).then(function (result) {
+            res.send(result);
+        });
+});
 
 module.exports = router;
