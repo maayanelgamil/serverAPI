@@ -67,6 +67,14 @@ router.put('/login', function (req,res,next) {
             res.send(false);
     });
 });
+//-------------------------------------------------------------------------------------------------------------------
+router.put('/questions', function (req,res,next) {
+    var name = req.body.UserName;
+    DButilsAzure.Select("Select [Question1],[Question2] from Users Where UserName = '" + name + "'").then(function (result) {
+        res.send(result);
+    });
+});
+
 
 
 module.exports = router;
