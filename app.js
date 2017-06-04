@@ -61,7 +61,39 @@ app.get('/categories', function (req,res) {
     });
 });
 //-------------------------------------------------------------------------------------------------------------------
+app.post('/addOrder', function (req,res) {
+    var name = req.body[0].UserName;
+    var shipping = req.body[0].ShipmentDate;
+    var dollar = req.body[0].Dollar;
+    var date =  new Date().toISOString().slice(0, 19).replace('T', ' ');
 
+    var query = DButilsAzure.getInsertScript(Constants.insertOrder, [name, date, shipping, dollar]);
+    DButilsAzure.Insert(query).then(function (result) {
+        if(result == true){
+            DButilsAzure.Select("Select * From Orders Where [UserName] = '"+ name + "' AND [OrderDate] ='" + date + "'")
+                .then(function (result) {
+                    var orderId = result[0].OrderID;
+                    var cakesInOrdersQuery = Constants.insertCakesInOrders + "('";
+                    var i;
+                    for(i = 1; i <req.body.length-1; i++) {
+                        var cakeId = req.body[i].CakeID;
+                        var amount = req.body[i].Amount;
+                        cakesInOrdersQuery += orderId +"','" + cakeId + "','"+amount+ "'),('";
+                     }
+                    var cakeId = req.body[i].CakeID;
+                    var amount = req.body[i].Amount;
+                    cakesInOrdersQuery += orderId +"','" + cakeId + "','"+amount+ "')";
+                    DButilsAzure.Insert(cakesInOrdersQuery).then(function(result){
+                        res.send(true);
+                    });
+                }).catch(function(err){
+                    res.send(err);
+            });
+            }
+        else res.send(false);
+    });
+});
+//-------------------------------------------------------------------------------------------------------------------
 
 // error handler
 app.use(function(err, req, res) {
