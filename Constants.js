@@ -37,6 +37,7 @@ exports.insertCakesInOrders = "INSERT INTO [dbo].[CakesInOrders]"+
             ",[CakeID]"+
             ",[Amount])"+
             "VALUES ";
+
 exports.insertCake = "INSERT INTO [dbo].[Cakes]"+
     "([CakeName]"+
     ",[SuplierID]"+
