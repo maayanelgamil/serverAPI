@@ -14,7 +14,6 @@ exports.usersInsert = "INSERT INTO [Users]"+
     ",[Phone]"+
     ",[Mail]"+
     ",[CreditCardNumber]"+
-    ",[LastLogin]"+
     ",[isADmin]" +
     ",[Question1]"+
    " ,[Question2]"+

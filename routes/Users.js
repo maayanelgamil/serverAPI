@@ -18,15 +18,13 @@ router.post('/register', function (req,res) {     //Add User
     var mail = req.body[0].Mail;
     var creditCard = req.body[0].CreditCardNumber;
     var isAdmin = req.body[0].isAdmin ? req.body[0].isAdmin : 0;
-    var date = new Date();
-    var currDate = date.getHours();
     var q1 = req.body[1].question1;
     var q2 = req.body[1].question2;
     var a1 = req.body[1].answer1;
     var a2 = req.body[1].answer2;
 
     query = DButilsAzure.getInsertScript(Constants.usersInsert, [username, password, firstName, lastName, adress, city,
-                                                            country, phone, mail, creditCard, currDate, isAdmin, q1, q2, a1, a2]);
+                                                            country, phone, mail, creditCard, isAdmin, q1, q2, a1, a2]);
     DButilsAzure.Insert(query).then(function (result) { //insert user's questions and answers
          if (result == true) {
                 var c1 = req.body[2].category1;
@@ -58,5 +56,17 @@ router.get('/getAllUsers', function (req,res,next) {
         res.send(result);
     });
 });
+//-------------------------------------------------------------------------------------------------------------------
+router.put('/login', function (req,res,next) {
+    var name = req.body.UserName;
+    var password = req.body.Password;
+    DButilsAzure.Select("Select * from Users Where UserName = '" + name + "' AND Password = '" + password + "'").then(function (result) {
+        if(result.length >0)
+            res.send(true);
+        else
+            res.send(false);
+    });
+});
+
 
 module.exports = router;

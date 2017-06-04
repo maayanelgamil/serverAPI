@@ -43,26 +43,26 @@ app.listen(3000, function() {
     console.log('I am listening on localhost:3000');
     // server is open and listening on port 3000, to access: localhost:3000 in any browser.
 });
-
-var config = {
-    userName: 'maayankeren',
-    password: 'Aa123456',
-    server: 'maayankeren.database.windows.net',
-    requestTimeout: 15000,
-    options: {encrypt: true, database: 'mk_db'}
-};
 //-------------------------------------------------------------------------------------------------------------------
-app.use(function(req, res, next){
+/*app.use(function(req, res, next){
     if (connected)
         next();
     else
         res.status(503).send('Server is down');
-});
+});*/
 //-------------------------------------------------------------------------------------------------------------------
 app.get('/getDollarRate', function (req,res) {
         res.send("3.81");
 });
 //-------------------------------------------------------------------------------------------------------------------
+app.get('/categories', function (req,res) {
+    DButilsAzure.Select("Select * from Categories").then(function (result) {
+            res.send(result);
+    });
+});
+//-------------------------------------------------------------------------------------------------------------------
+
+
 // error handler
 app.use(function(err, req, res) {
     // set locals, only providing error in development
