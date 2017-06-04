@@ -71,10 +71,19 @@ router.put('/login', function (req,res,next) {
 router.put('/questions', function (req,res,next) {
     var name = req.body.UserName;
     DButilsAzure.Select("Select [Question1],[Question2] from Users Where UserName = '" + name + "'").then(function (result) {
-        res.send(result);
+        res.send(result[0]);
     });
 });
-
+//-------------------------------------------------------------------------------------------------------------------
+router.post('/restorePassword', function (req,res,next) {
+    var name = req.body.UserName;
+    var a1 = req.body.Answer1;
+    var a2 = req.body.Answer2;
+    DButilsAzure.Select("Select [Password] from Users Where UserName = '" + name + "' AND Answer1 = '"+ a1 + "' AND Answer2 = '"+ a2 + "'")
+        .then(function (result) {
+                res.send(result[0]);
+    });
+});
 
 
 module.exports = router;
