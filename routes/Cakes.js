@@ -40,5 +40,13 @@ router.post('/addCake', function (req,res,next) {
             res.send(result);
         });
 });
+//-------------------------------------------------------------------------------------------------------------------
+router.delete('/deleteCake', function (req,res) {
+    var cakeId = req.body.CakeID;
+    DButilsAzure.Delete("DELETE from [Cakes] WHERE [CakeID] = '" + cakeId + "'").then(function (result) {
+       // res.status(200).send('Delete succeeded');
+        //The result doenn't seem to be sent to the user
+    });
+});
 
 module.exports = router;
