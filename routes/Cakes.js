@@ -10,4 +10,10 @@ var Constants = require('../Constants');
 var router = express.Router();
 
 
+router.get('/', function (req,res,next) {
+    DButilsAzure.Select('Select * from Cakes').then(function (result) {
+        res.send(result);
+    });
+});
+
 module.exports = router;
