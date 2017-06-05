@@ -34,10 +34,10 @@ router.post('/register', function (req,res) {     //Add User
                 DButilsAzure.Insert(categoryQuery).then(function (result)
                     {
                              res.send(result);
-                     });
+                     }).catch(function(err){ res.status(400).send(err);});
                 }
             else  res.send(false);
-        });
+        }).catch(function(err){ res.status(400).send(err);});
     });
 //-------------------------------------------------------------------------------------------------------------------
 router.delete('/deleteUser', function (req,res) {
@@ -45,16 +45,16 @@ router.delete('/deleteUser', function (req,res) {
         if(userId){
         DButilsAzure.Delete("DELETE from [Users] WHERE [UserName] = '" + userId + "'").then(function (result) {
             res.send(result);
-        });
+        }).catch(function(err){ res.status(400).send(err);});
     }else{
-        throw new Error('Delete User Faild: Since the user name is invalid ');
+            res.status(400).send('Delete User Faild: Since the user name is invalid ');
     }
 });
 //-------------------------------------------------------------------------------------------------------------------
 router.get('/getAll', function (req,res,next) {
     DButilsAzure.Select('Select * from Users').then(function (result) {
         res.send(result);
-    });
+    }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
 router.put('/login', function (req,res,next) {
@@ -65,14 +65,14 @@ router.put('/login', function (req,res,next) {
             res.send(true);
         else
             res.send(false);
-    });
+    }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
 router.put('/questions', function (req,res,next) {
     var name = req.body.UserName;
     DButilsAzure.Select("Select [Question1],[Question2] from Users Where UserName = '" + name + "'").then(function (result) {
         res.send(result[0]);
-    });
+    }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
 router.post('/restorePassword', function (req,res,next) {
@@ -82,14 +82,14 @@ router.post('/restorePassword', function (req,res,next) {
     DButilsAzure.Select("Select [Password] from Users Where UserName = '" + name + "' AND Answer1 = '"+ a1 + "' AND Answer2 = '"+ a2 + "'")
         .then(function (result) {
                 res.send(result[0]);
-    });
+    }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
 router.put('/orders', function (req,res,next) {
     var name = req.body.UserName;
     DButilsAzure.Select("Select * from Orders Where [UserName] = '" + name + "'").then(function (result) {
         res.send(result);
-    });
+    }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
 router.post('/addToCart', function (req,res,next) {
@@ -102,7 +102,7 @@ router.post('/addToCart', function (req,res,next) {
             res.send(result);
         else
             res.send(false);
-    });
+    }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
 router.delete('/deleteFromCart', function (req,res) {
@@ -110,7 +110,7 @@ router.delete('/deleteFromCart', function (req,res) {
     var cake = req.body.CakeID;
     DButilsAzure.Delete("DELETE from [CakesInCarts] WHERE [UserName] = '" + name + "' AND [CakeID] = '" + cake + "'").then(function (result) {
         res.send(result);
-    });
+    }).catch(function(err){ res.status(400).send(err);});
 });
 
 module.exports = router;

@@ -12,7 +12,7 @@ var router = express.Router();
 
 router.get('/', function (req,res,next) {
     DButilsAzure.Select('Select * from Cakes').then(function (result) {
-        res.send(result);
+        res.send(result).catch(function(err){ res.status(400).send(err);});
     });
 });
 //-------------------------------------------------------------------------------------------------------------------
@@ -25,7 +25,7 @@ router.put('/available', function (req,res,next) {
             res.send(true);
         else
             res.send(false);
-    });
+    }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
 router.post('/addCake', function (req,res,next) {
@@ -38,21 +38,21 @@ router.post('/addCake', function (req,res,next) {
     var query = DButilsAzure.getInsertScript(Constants.insertCake, [name, suplierId, description, price, amount]);
     DButilsAzure.Insert(query).then(function (result) {
             res.send(result);
-        });
+        }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
 router.delete('/deleteCake', function (req,res) {
     var cakeId = req.body.CakeID;
     DButilsAzure.Delete("DELETE from [Cakes] WHERE [CakeID] = '" + cakeId + "'").then(function (result) {
-       // res.status(200).send('Delete succeeded');
+        res.status(200).send('Delete succeeded');
         //The result doenn't seem to be sent to the user
-    });
+    }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
 router.get('/getNewCakes', function (req,res) {
     DButilsAzure.Select("SELECT TOP 5 * from [Cakes] ORDER BY CakeID DESC").then(function (result) {
         res.send(result);
-    });
+    }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
 router.get('/top5', function (req,res) {
@@ -70,7 +70,7 @@ router.get('/top5', function (req,res) {
                 console.log("Promise Rejected");
                 res.send("Rejected");
             });
-    });
+    }).catch(function(err){ res.status(400).send(err);});
 });
 
 module.exports = router;

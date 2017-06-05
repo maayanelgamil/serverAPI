@@ -14,7 +14,7 @@ router.get('/getDollarRate', function (req,res) {
 router.get('/categories', function (req,res) {
     DButilsAzure.Select("Select * from Categories").then(function (result) {
         res.send(result);
-    });
+    }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
 router.post('/addOrder', function (req,res) {
@@ -47,7 +47,7 @@ router.post('/addOrder', function (req,res) {
             });
         }
         else res.send(false);
-    });
+    }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
 module.exports = router;

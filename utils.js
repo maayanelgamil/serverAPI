@@ -62,22 +62,16 @@ exports.Insert= function(query) {
     return new Promise(function(resolve,reject) {
         connection = new Connection(config);
 
-        var req = new Request(query, function (err) {
-            if (err) {
-                console.log(err);
-                reject(err.message);
-            }
-        });
         connection.on('connect', function(err) {
             if (err) {
                 console.error('error connecting: ' + err.message);
                 reject(err);
             }
             console.log('connection on');
-            var dbReq = new Request(query, function (err, rowCount) {
+            var req = new Request(query, function (err) {
                 if (err) {
                     console.log(err);
-                    reject(err);
+                    reject(err.message);
                 }
             });
             req.on('requestCompleted', function () {
@@ -88,21 +82,14 @@ exports.Insert= function(query) {
             else
                 resolve(true);
         });
-
             connection.execSql(req);
-
         });
     });
 }
 
 exports.Delete= function(query) {
     return new Promise(function(resolve,reject) {
-        var req = new Request(query, function (err) {
-            if (err) {
-                console.log(err);
-                reject(err.message);
-            }
-        });
+
         connection = new Connection(config);
         connection.on('connect', function(err) {
             if (err) {
@@ -110,13 +97,12 @@ exports.Delete= function(query) {
                 reject(err);
             }
             console.log('connection on');
-            var dbReq = new Request(query, function (err, rowCount) {
+            var req = new Request(query, function (err) {
                 if (err) {
                     console.log(err);
-                    reject(err);
+                    reject(err.message);
                 }
             });
-
         req.on('requestCompleted', function () {
             console.log("request completed");
             connection.close();
