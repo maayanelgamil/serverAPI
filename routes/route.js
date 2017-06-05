@@ -21,9 +21,10 @@ router.post('/addOrder', function (req,res) {
     var name = req.body[0].UserName;
     var shipping = req.body[0].ShipmentDate;
     var dollar = req.body[0].Dollar;
+    var payment = req.body[0].TotalPayment;
     var date =  new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-    var query = DButilsAzure.getInsertScript(Constants.insertOrder, [name, date, shipping, dollar]);
+    var query = DButilsAzure.getInsertScript(Constants.insertOrder, [name, date, shipping, dollar, payment]);
     DButilsAzure.Insert(query).then(function (result) {
             DButilsAzure.Select("Select * From Orders Where [UserName] = '"+ name + "' AND [OrderDate] ='" + date + "'")
                 .then(function (result) {

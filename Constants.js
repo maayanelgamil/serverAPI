@@ -29,7 +29,8 @@ exports.insertOrder = "INSERT INTO [dbo].[Orders]"+
     "([UserName]" +
     ",[OrderDate]" +
     ",[ShipmentDate]" +
-    ",[Dollar])" ;
+    ",[Dollar]" +
+    ",[TotalPayment])" ;
 
 exports.insertCakesInOrders = "INSERT INTO [dbo].[CakesInOrders]"+
             "([OrderID]"+
