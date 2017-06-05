@@ -17,13 +17,6 @@ var connection;
 
 exports.Select = function(query) {
   return new Promise(function(resolve,reject) {
-
-      var req = new Request(query, function (err, rowCount) {
-          if (err) {
-              console.log(err);
-              reject(err.message);
-          }
-      });
       var ans = [];
       var properties = [];
       connection = new Connection(config);
@@ -32,49 +25,49 @@ exports.Select = function(query) {
               console.error('error connecting: ' + err.message);
               reject(err);
           }
-          console.log('connection on');
-          var dbReq = new Request(query, function (err, rowCount) {
+          var req = new Request(query, function (err, rowCount) {
               if (err) {
                   console.log(err);
-                  reject(err);
+                  reject(err.message);
               }
           });
 
-      req.on('columnMetadata', function (columns) {
-          columns.forEach(function (column) {
-              if (column.colName != null)
-                  properties.push(column.colName);
+          req.on('columnMetadata', function (columns) {
+              columns.forEach(function (column) {
+                  if (column.colName != null)
+                      properties.push(column.colName);
+              });
           });
-      });
-      req.on('row', function (row) {
-          var item = {};
-          for (i = 0; i < row.length; i++) {
-              item[properties[i]] = row[i].value;
-          }
-          ans.push(item);
-      });
+          req.on('row', function (row) {
+              var item = {};
+              for (i = 0; i < row.length; i++) {
+                  item[properties[i]] = row[i].value;
+              }
+              ans.push(item);
+          });
 
-      req.on('requestCompleted', function () {
-          //don't forget handle your errors
-          console.log('request Completed: ' + req.rowCount + ' row(s) returned');
-          console.log(ans);
-          connection.close();
-          resolve(ans);
-      });
-      connection.execSql(req);
+          req.on('requestCompleted', function () {
+              //don't forget handle your errors
+              console.log('request Completed: ' + req.rowCount + ' row(s) returned');
+              console.log(ans);
+              connection.close();
+              resolve(ans);
+          });
+          connection.execSql(req);
         });
     });
 }
 
 exports.Insert= function(query) {
     return new Promise(function(resolve,reject) {
+        connection = new Connection(config);
+
         var req = new Request(query, function (err) {
             if (err) {
                 console.log(err);
                 reject(err.message);
             }
         });
-        connection = new Connection(config);
         connection.on('connect', function(err) {
             if (err) {
                 console.error('error connecting: ' + err.message);
@@ -87,21 +80,18 @@ exports.Insert= function(query) {
                     reject(err);
                 }
             });
-        req.on('requestCompleted', function () {
+            req.on('requestCompleted', function () {
             console.log("request completed to insert: " + query);
             connection.close();
-            if(reject)
-                resolve(true);
+            if(req.error)
+                resolve(req.error);
             else
-                resolve(false);
+                resolve(true);
         });
-        try{
+
             connection.execSql(req);
-        }catch(err) {
-            reject(err.message);
-            console.log(err);
-           }
-         });
+
+        });
     });
 }
 
