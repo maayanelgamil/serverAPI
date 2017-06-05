@@ -9,16 +9,15 @@ var DButilsAzure = require('../utils');
 var Constants = require('../Constants');
 var router = express.Router();
 
-
 router.get('/', function (req,res,next) {
     DButilsAzure.Select('Select * from Cakes').then(function (result) {
         res.send(result).catch(function(err){ res.status(400).send(err);});
     });
 });
 //-------------------------------------------------------------------------------------------------------------------
-router.put('/available', function (req,res,next) {
-    var id = req.body.CakeID;
-    var amount = req.body.Amount;
+router.get('/available/:id/:amount', function (req,res,next) {
+    var id = req.params.id;
+    var amount = req.params.amount;
     DButilsAzure.Select("Select * from Cakes Where [CakeID] = '" + id + "' AND [StockAmount] >= '"+ amount + "'")
     .then(function (result) {
         if(result.length > 0)

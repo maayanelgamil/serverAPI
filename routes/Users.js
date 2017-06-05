@@ -69,8 +69,8 @@ router.put('/login', function (req,res,next) {
     }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
-router.put('/questions', function (req,res,next) {
-    var name = req.body.UserName;
+router.get('/questions/:name', function (req,res,next) {
+    var name = req.params.name;
     DButilsAzure.Select("Select [Question1],[Question2] from Users Where UserName = '" + name + "'").then(function (result) {
         res.send(result[0]);
     }).catch(function(err){ res.status(400).send(err);});
@@ -86,8 +86,8 @@ router.put('/restorePassword', function (req,res,next) {
     }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
-router.put('/orders', function (req,res,next) {
-    var name = req.body.UserName;
+router.get('/orders/:name', function (req,res,next) {
+    var name = req.params.name;
     DButilsAzure.Select("Select * from Orders Where [UserName] = '" + name + "'").then(function (result) {
         res.send(result);
     }).catch(function(err){ res.status(400).send(err);});
