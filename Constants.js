@@ -2,7 +2,6 @@
  * Created by Maayan on 6/1/2017.
  */
 
-
 exports.usersInsert = "INSERT INTO [Users]"+
     "([UserName]"+
     ",[Password]"+
@@ -49,4 +48,25 @@ exports.insertToCart = "INSERT INTO [dbo].[CakesInCarts]"+
     "([UserName]"+
     ",[CakeID]"+
     ",[Amount])";
+
+exports.recommendedCakesScript = function(userName){
+    var query = "Select * From Cakes Where CakeID IN (Select CakeID From CakesInOrders Where OrderID IN"+
+        " (Select OrderID"+
+        "  From Orders"+
+        "  Where UserName IN"+
+        "(Select distinct UserName"+
+        "  From Orders"+
+        "  Where OrderID IN"+
+        "   (Select OrderID"+
+        "   From CakesInOrders"+
+        "   where CakeID IN (SELECT distinct CakeID"+
+        "    From CakesInOrders"+
+        "   Where OrderID IN    (Select OrderID"+
+        "    From Orders"+
+        "    Where UserName = '" + userName + "'))) AND UserName <> '" + userName + "')) And CakeID NOT IN (SELECT distinct CakeID"+
+        "   From CakesInOrders    Where OrderID IN"+
+        "   (Select OrderID    From Orders"+
+        "   Where UserName = '" + userName + "')))";
+    return query;
+};
 

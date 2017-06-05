@@ -37,7 +37,8 @@ router.post('/register', function (req,res) {     //Add User
                      }).catch(function(err){ res.status(400).send(err);});
                 }
             else  res.send(false);
-        }).catch(function(err){ res.status(400).send(err);});
+        }).catch(function(err){
+            res.status(400).send(err);});
     });
 //-------------------------------------------------------------------------------------------------------------------
 router.delete('/deleteUser', function (req,res) {
@@ -47,7 +48,7 @@ router.delete('/deleteUser', function (req,res) {
             res.send(result);
         }).catch(function(err){ res.status(400).send(err);});
     }else{
-            res.status(400).send('Delete User Faild: Since the user name is invalid ');
+            res.status(400).send('Delete User faild: Since the user name is invalid ');
     }
 });
 //-------------------------------------------------------------------------------------------------------------------
@@ -109,6 +110,14 @@ router.delete('/deleteFromCart', function (req,res) {
     var name = req.body.UserName;
     var cake = req.body.CakeID;
     DButilsAzure.Delete("DELETE from [CakesInCarts] WHERE [UserName] = '" + name + "' AND [CakeID] = '" + cake + "'").then(function (result) {
+        res.send(result);
+    }).catch(function(err){ res.status(400).send(err);});
+});
+//-------------------------------------------------------------------------------------------------------------------
+router.put('/recommandation', function (req,res) {
+    var name = req.body.UserName;
+    var query = Constants.recommendedCakesScript(name);
+    DButilsAzure.Select(query).then(function (result) {
         res.send(result);
     }).catch(function(err){ res.status(400).send(err);});
 });

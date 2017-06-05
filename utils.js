@@ -61,7 +61,6 @@ exports.Select = function(query) {
 exports.Insert= function(query) {
     return new Promise(function(resolve,reject) {
         connection = new Connection(config);
-
         connection.on('connect', function(err) {
             if (err) {
                 console.error('error connecting: ' + err.message);
@@ -89,14 +88,12 @@ exports.Insert= function(query) {
 
 exports.Delete= function(query) {
     return new Promise(function(resolve,reject) {
-
         connection = new Connection(config);
         connection.on('connect', function(err) {
             if (err) {
                 console.error('error connecting: ' + err.message);
                 reject(err);
             }
-            console.log('connection on');
             var req = new Request(query, function (err) {
                 if (err) {
                     console.log(err);

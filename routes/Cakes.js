@@ -38,7 +38,8 @@ router.post('/addCake', function (req,res,next) {
     var query = DButilsAzure.getInsertScript(Constants.insertCake, [name, suplierId, description, price, amount]);
     DButilsAzure.Insert(query).then(function (result) {
             res.send(result);
-        }).catch(function(err){ res.status(400).send(err);});
+        }).catch(function(err){
+            res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
 router.delete('/deleteCake', function (req,res) {
