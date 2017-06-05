@@ -18,10 +18,10 @@ router.post('/register', function (req,res) {     //Add User
     var mail = req.body[0].Mail;
     var creditCard = req.body[0].CreditCardNumber;
     var isAdmin = req.body[0].isAdmin ? req.body[0].isAdmin : 0;
-    var q1 = req.body[1].question1;
-    var q2 = req.body[1].question2;
-    var a1 = req.body[1].answer1;
-    var a2 = req.body[1].answer2;
+    var q1 = req.body[1].Question1;
+    var q2 = req.body[1].Question2;
+    var a1 = req.body[1].Answer1;
+    var a2 = req.body[1].Answer2;
 
     query = DButilsAzure.getInsertScript(Constants.usersInsert, [username, password, firstName, lastName, adress, city,
                                                             country, phone, mail, creditCard, isAdmin, q1, q2, a1, a2]);
@@ -76,7 +76,7 @@ router.put('/questions', function (req,res,next) {
     }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
-router.post('/restorePassword', function (req,res,next) {
+router.put('/restorePassword', function (req,res,next) {
     var name = req.body.UserName;
     var a1 = req.body.Answer1;
     var a2 = req.body.Answer2;

@@ -49,6 +49,13 @@ exports.insertToCart = "INSERT INTO [dbo].[CakesInCarts]"+
     ",[CakeID]"+
     ",[Amount])";
 
+exports.updateCakesAmount = function(id, amount){
+    var query = 	"UPDATE [dbo].[Cakes] "+
+    "SET [StockAmount] = [StockAmount] - " + amount +
+    "WHERE CakeID = '" + id + "' ";
+    return query;
+};
+
 exports.recommendedCakesScript = function(userName){
     var query = "Select * From Cakes Where CakeID IN (Select CakeID From CakesInOrders Where OrderID IN"+
         " (Select OrderID"+

@@ -25,28 +25,28 @@ router.post('/addOrder', function (req,res) {
 
     var query = DButilsAzure.getInsertScript(Constants.insertOrder, [name, date, shipping, dollar]);
     DButilsAzure.Insert(query).then(function (result) {
-        if(result == true){
             DButilsAzure.Select("Select * From Orders Where [UserName] = '"+ name + "' AND [OrderDate] ='" + date + "'")
                 .then(function (result) {
                     var orderId = result[0].OrderID;
                     var cakesInOrdersQuery = Constants.insertCakesInOrders + "('";
+                    var updateQuery = "";
                     var i;
                     for(i = 1; i <req.body.length-1; i++) {
                         var cakeId = req.body[i].CakeID;
                         var amount = req.body[i].Amount;
                         cakesInOrdersQuery += orderId +"','" + cakeId + "','"+amount+ "'),('";
+                        updateQuery += Constants.updateCakesAmount(cakeId, amount);
                     }
                     var cakeId = req.body[i].CakeID;
                     var amount = req.body[i].Amount;
+                    updateQuery += Constants.updateCakesAmount(cakeId, amount);
                     cakesInOrdersQuery += orderId +"','" + cakeId + "','"+amount+ "')";
                     DButilsAzure.Insert(cakesInOrdersQuery).then(function(result){
-                        res.send(true);
-                    });
-                }).catch(function(err){
-                res.send(err);
-            });
-        }
-        else res.send(false);
+                        DButilsAzure.Insert(updateQuery).then(function(result){
+                            res.send(true);
+                        });
+                    }).catch(function(err){ res.status(400).send(err);});
+                }).catch(function(err){ res.status(400).send(err);});
     }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
