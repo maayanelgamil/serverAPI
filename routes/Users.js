@@ -117,11 +117,14 @@ router.delete('/deleteFromCart', function (req,res) {
     }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------
-router.put('/recommandation', function (req,res) {
-    var name = req.body.UserName;
+router.get('/recommandation/:name', function (req,res) {
+    var name = req.params.name;
     var query = Constants.recommendedCakesScript(name);
     DButilsAzure.Select(query).then(function (result) {
-        res.send(result);
+        if(result.length == 0)
+            res.send("empty");
+        else
+            res.send(result);
     }).catch(function(err){ res.status(400).send(err);});
 });
 
