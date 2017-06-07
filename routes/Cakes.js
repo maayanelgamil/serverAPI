@@ -68,4 +68,12 @@ router.get('/top5', function (req,res) {
     }).catch(function(err){ res.status(400).send(err);});
 });
 
+//-------------------------------------------------------------------------------------------------------------------
+router.get('/cakesInOrder/:orderID', function (req,res,next) {
+    var orderID = req.params.orderID;
+    DButilsAzure.Select("Select * from CakesInOrders Where [OrderID] = '" + orderID + "'").then(function (result) {
+        res.send(result);
+    }).catch(function(err){ res.status(400).send(err);});
+});
+
 module.exports = router;
