@@ -45,7 +45,7 @@ router.delete('/deleteUser', function (req,res) {
         var userId = req.body.UserName;
         if(userId){
         DButilsAzure.Delete("DELETE from [Users] WHERE [UserName] = '" + userId + "'").then(function (result) {
-            res.send(result);
+            res.status(200).send('Delete succeeded');
         }).catch(function(err){ res.status(400).send(err);});
     }else{
             res.status(400).send('Delete User faild: Since the user name is invalid ');
@@ -110,7 +110,7 @@ router.delete('/deleteFromCart', function (req,res) {
     var name = req.body.UserName;
     var cake = req.body.CakeID;
     DButilsAzure.Delete("DELETE from [CakesInCarts] WHERE [UserName] = '" + name + "' AND [CakeID] = '" + cake + "'").then(function (result) {
-        res.send(result);
+        res.status(200).send('Delete succeeded');
     }).catch(function(err){ res.status(400).send(err);});
 });
 //-------------------------------------------------------------------------------------------------------------------

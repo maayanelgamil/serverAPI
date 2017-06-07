@@ -103,6 +103,10 @@ exports.Delete= function(query) {
         req.on('requestCompleted', function () {
             console.log("request completed");
             connection.close();
+            if(req.error)
+                resolve(req.error);
+            else
+                resolve(true);
         });
         connection.execSql(req);
     });
