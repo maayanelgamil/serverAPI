@@ -122,7 +122,9 @@ router.get('/recommandation/:name', function (req,res) {
     var query = Constants.recommendedCakesScript(name);
     DButilsAzure.Select(query).then(function (result) {
         if(result.length == 0)
-            res.send("empty");
+            DButilsAzure.Select(Constants.recommendedCakesCategory(name)).then (function (result) {
+                res.send(result);
+            });
         else
             res.send(result);
     }).catch(function(err){ res.status(400).send(err);});
