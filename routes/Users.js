@@ -82,6 +82,9 @@ router.put('/restorePassword', function (req,res,next) {
     var a2 = req.body.Answer2;
     DButilsAzure.Select("Select [Password] from Users Where UserName = '" + name + "' AND Answer1 = '"+ a1 + "' AND Answer2 = '"+ a2 + "'")
         .then(function (result) {
+            if(result[0] == string.empty())
+                res.status(400).send();
+            else
                 res.send(result[0]);
     }).catch(function(err){ res.status(400).send(err);});
 });
