@@ -72,5 +72,24 @@ router.get('/top5', function (req,res) {
             });
     }).catch(function(err){ res.status(400).send(err);});
 });
+//-------------------------------------------------------------------------------------------------------------------
+router.get('/byCategory/:categoryId', function (req,res,next) {
+    var category = req.params.categoryId;
+    var query = Constants.cakesCategories(category);
+    DButilsAzure.Select(query)
+        .then(function (result) {
+                res.send(result);
+        }).catch(function(err){ res.status(400).send(err);});
+});
+//-------------------------------------------------------------------------------------------------------------------
+router.get('/byID/:cakeId', function (req,res,next) {
+    var cake = req.params.cakeId;
+    DButilsAzure.Select("Select * From Cakes Where CakeId = " + cake)
+        .then(function (result) {
+            res.send(result);
+        }).catch(function(err){ res.status(400).send(err);});
+});
+
+
 
 module.exports = router;

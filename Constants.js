@@ -78,3 +78,9 @@ exports.recommendedCakesScript = function(userName){
     return query;
 };
 
+exports.cakesCategories = function(category){
+    var query = "Select * From Cakes Where [CakeID] IN (SELECT CakeID FROM [dbo].[CakeCategories]" +
+    "Where [CategoryID] = " + category + " )";
+    return query;
+}
+
