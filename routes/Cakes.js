@@ -84,13 +84,17 @@ router.get('/byID/:cakeId', function (req,res,next) {
             res.send(result);
         }).catch(function(err){ res.status(400).send(err);});
 });
-
-
-
 //-------------------------------------------------------------------------------------------------------------------
 router.get('/cakesInOrder/:orderID', function (req,res,next) {
     var orderID = req.params.orderID;
     DButilsAzure.Select("Select * from CakesInOrders Where [OrderID] = '" + orderID + "'").then(function (result) {
+        res.send(result);
+    }).catch(function(err){ res.status(400).send(err);});
+});
+//-------------------------------------------------------------------------------------------------------------------
+router.get('/byName/:name', function (req,res,next) {
+    var cake = req.params.name;
+    DButilsAzure.Select("Select * from Cakes where [CakeName] = '" + cake + "'").then(function (result) {
         res.send(result);
     }).catch(function(err){ res.status(400).send(err);});
 });
