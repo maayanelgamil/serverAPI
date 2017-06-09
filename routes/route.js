@@ -16,6 +16,13 @@ router.get('/categories', function (req,res) {
         res.send(result);
     }).catch(function(err){ res.status(400).send(err);});
 });
+
+//-------------------------------------------------------------------------------------------------------------------
+router.get('/supliers', function (req,res) {
+    DButilsAzure.Select("Select * from Supliers").then(function (result) {
+        res.send(result);
+    }).catch(function(err){ res.status(400).send(err);});
+});
 //-------------------------------------------------------------------------------------------------------------------
 router.post('/addOrder', function (req,res) {
     var name = req.body[0].UserName;

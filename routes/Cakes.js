@@ -1,9 +1,4 @@
-/**
- * Created by Maayan on 6/3/2017.
- */
-/**
- * Created by Maayan on 6/3/2017.
- */
+
 var express = require('express');
 var DButilsAzure = require('../utils');
 var Constants = require('../Constants');
@@ -91,5 +86,13 @@ router.get('/byID/:cakeId', function (req,res,next) {
 });
 
 
+
+//-------------------------------------------------------------------------------------------------------------------
+router.get('/cakesInOrder/:orderID', function (req,res,next) {
+    var orderID = req.params.orderID;
+    DButilsAzure.Select("Select * from CakesInOrders Where [OrderID] = '" + orderID + "'").then(function (result) {
+        res.send(result);
+    }).catch(function(err){ res.status(400).send(err);});
+});
 
 module.exports = router;
